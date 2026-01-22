@@ -5,7 +5,9 @@ A modern underwriting workbench portal built with React, Vite, and DXC Technolog
 ## Features
 
 - **Dashboard** - Overview metrics and submission queue with card/grid view toggle
-- **Underwriting Workbench** - Detailed submission review with tabs for overview, requirements, timeline, and notes
+- **Underwriting Workbench** - Detailed submission review with tabs for overview, requirements, timeline, notes, and documents
+- **Document Management** - Upload, view, and manage submission documents with IDP integration
+- **IDP (Intelligent Document Processing)** - Automated data extraction from applications, medical records, and financial statements
 - **Submission Intake** - Multi-step form for creating new underwriting submissions
 - **Blue Theme** - Professional blue color scheme (#0095FF primary, #0077CC hover)
 - **Halstack Components** - Enterprise-grade UI components following DXC design standards
@@ -51,14 +53,18 @@ npm run preview
 src/
   components/
     Dashboard/              # Main dashboard view
-    UnderwritingWorkbench/ # Detailed submission review
-    SubmissionIntake/      # Multi-step intake form
-    shared/                # Reusable components
+    UnderwritingWorkbench/  # Detailed submission review
+    SubmissionIntake/       # Multi-step intake form
+    shared/                 # Reusable components
+      DocumentCard.jsx      # Document display card
+      DocumentUpload.jsx    # File upload interface
+      IDPResults.jsx        # IDP extraction viewer
   data/
-    mockSubmissions.js     # Sample underwriting data
-  App.jsx                  # Main layout and routing
-  main.jsx                 # Entry point
-  index.css                # Global styles
+    mockSubmissions.js      # Sample underwriting data
+    mockDocuments.js        # Sample documents & IDP results
+  App.jsx                   # Main layout and routing
+  main.jsx                  # Entry point
+  index.css                 # Global styles
 ```
 
 ## Design Principles
@@ -91,10 +97,15 @@ The dashboard displays:
 
 ### Underwriting Workbench
 - Summary cards (Status, Priority, Coverage, Risk Score, Assigned To)
-- Tabbed interface (Overview, Requirements, Timeline, Notes)
+- Tabbed interface (Overview, Requirements, Timeline, Notes, Documents)
 - Requirement tracking with progress bar
 - Activity timeline
 - Notes section
+- Document management with IDP extraction results
+- Upload documents with automatic classification
+- View extracted fields with confidence scores
+- Validation tracking (extracted, validated, flagged fields)
+- Support for Application Forms, Medical Records, Financial Statements
 
 ### Submission Intake
 - 4-step form wizard with progress bar
