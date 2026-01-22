@@ -24,7 +24,7 @@ import TaskList from '../shared/TaskList';
 import SLATimer from '../shared/SLATimer';
 import './UnderwritingWorkbench.css';
 
-const UnderwritingWorkbench = ({ submission }) => {
+const UnderwritingWorkbench = ({ submission, productType }) => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [notes, setNotes] = useState('');
   const [showUpload, setShowUpload] = useState(false);
@@ -68,12 +68,12 @@ const UnderwritingWorkbench = ({ submission }) => {
           <DxcInset space="var(--spacing-padding-m)">
             <DxcFlex direction="column" gap="var(--spacing-gap-l)">
               <div>
-                <DxcHeading level={4} text="Applicant Information" />
+                <DxcHeading level={4} text={productType === 'P&C' ? "Business Information" : "Applicant Information"} />
                 <DxcFlex direction="column" gap="var(--spacing-gap-s)" style={{ marginTop: 'var(--spacing-gap-m)' }}>
                   <DxcFlex gap="var(--spacing-gap-m)">
                     <DxcFlex direction="column" gap="var(--spacing-gap-xs)" grow={1}>
                       <DxcTypography fontSize="12px" color="var(--color-fg-neutral-stronger)">
-                        Full Name
+                        {productType === 'P&C' ? 'Business Name' : 'Full Name'}
                       </DxcTypography>
                       <DxcTypography fontSize="font-scale-03">
                         {submission.applicantName}
@@ -81,31 +81,52 @@ const UnderwritingWorkbench = ({ submission }) => {
                     </DxcFlex>
                     <DxcFlex direction="column" gap="var(--spacing-gap-xs)" grow={1}>
                       <DxcTypography fontSize="12px" color="var(--color-fg-neutral-stronger)">
-                        Date of Birth
+                        {productType === 'P&C' ? 'Effective Date' : 'Date of Birth'}
                       </DxcTypography>
                       <DxcTypography fontSize="font-scale-03">
-                        03/15/1985
+                        {productType === 'P&C' ? submission.effectiveDate : (submission.age ? `Age ${submission.age}` : '03/15/1985')}
                       </DxcTypography>
                     </DxcFlex>
                   </DxcFlex>
-                  <DxcFlex gap="var(--spacing-gap-m)">
-                    <DxcFlex direction="column" gap="var(--spacing-gap-xs)" grow={1}>
-                      <DxcTypography fontSize="12px" color="var(--color-fg-neutral-stronger)">
-                        Medical History
-                      </DxcTypography>
-                      <DxcTypography fontSize="font-scale-03">
-                        {submission.medicalHistory}
-                      </DxcTypography>
+                  {productType === 'Life & Annuity' ? (
+                    <DxcFlex gap="var(--spacing-gap-m)">
+                      <DxcFlex direction="column" gap="var(--spacing-gap-xs)" grow={1}>
+                        <DxcTypography fontSize="12px" color="var(--color-fg-neutral-stronger)">
+                          Medical History
+                        </DxcTypography>
+                        <DxcTypography fontSize="font-scale-03">
+                          {submission.medicalHistory || 'None'}
+                        </DxcTypography>
+                      </DxcFlex>
+                      <DxcFlex direction="column" gap="var(--spacing-gap-xs)" grow={1}>
+                        <DxcTypography fontSize="12px" color="var(--color-fg-neutral-stronger)">
+                          Occupation
+                        </DxcTypography>
+                        <DxcTypography fontSize="font-scale-03">
+                          {submission.occupation || 'Not specified'}
+                        </DxcTypography>
+                      </DxcFlex>
                     </DxcFlex>
-                    <DxcFlex direction="column" gap="var(--spacing-gap-xs)" grow={1}>
-                      <DxcTypography fontSize="12px" color="var(--color-fg-neutral-stronger)">
-                        Effective Date
-                      </DxcTypography>
-                      <DxcTypography fontSize="font-scale-03">
-                        {submission.effectiveDate}
-                      </DxcTypography>
+                  ) : (
+                    <DxcFlex gap="var(--spacing-gap-m)">
+                      <DxcFlex direction="column" gap="var(--spacing-gap-xs)" grow={1}>
+                        <DxcTypography fontSize="12px" color="var(--color-fg-neutral-stronger)">
+                          Fleet Size
+                        </DxcTypography>
+                        <DxcTypography fontSize="font-scale-03">
+                          {submission.fleetSize ? `${submission.fleetSize} vehicles` : 'N/A'}
+                        </DxcTypography>
+                      </DxcFlex>
+                      <DxcFlex direction="column" gap="var(--spacing-gap-xs)" grow={1}>
+                        <DxcTypography fontSize="12px" color="var(--color-fg-neutral-stronger)">
+                          Radius of Operation
+                        </DxcTypography>
+                        <DxcTypography fontSize="font-scale-03">
+                          {submission.radiusOfOperation || 'N/A'}
+                        </DxcTypography>
+                      </DxcFlex>
                     </DxcFlex>
-                  </DxcFlex>
+                  )}
                 </DxcFlex>
               </div>
 
@@ -130,6 +151,26 @@ const UnderwritingWorkbench = ({ submission }) => {
                       </DxcTypography>
                     </DxcFlex>
                   </DxcFlex>
+                  {productType === 'P&C' && (
+                    <DxcFlex gap="var(--spacing-gap-m)">
+                      <DxcFlex direction="column" gap="var(--spacing-gap-xs)" grow={1}>
+                        <DxcTypography fontSize="12px" color="var(--color-fg-neutral-stronger)">
+                          Vehicles
+                        </DxcTypography>
+                        <DxcTypography fontSize="font-scale-03">
+                          {submission.vehicles || 'N/A'}
+                        </DxcTypography>
+                      </DxcFlex>
+                      <DxcFlex direction="column" gap="var(--spacing-gap-xs)" grow={1}>
+                        <DxcTypography fontSize="12px" color="var(--color-fg-neutral-stronger)">
+                          Cargo Type
+                        </DxcTypography>
+                        <DxcTypography fontSize="font-scale-03">
+                          {submission.cargo || 'N/A'}
+                        </DxcTypography>
+                      </DxcFlex>
+                    </DxcFlex>
+                  )}
                 </DxcFlex>
               </div>
             </DxcFlex>

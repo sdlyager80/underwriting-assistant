@@ -12,29 +12,34 @@ import {
   DxcPaginator,
   DxcInset,
 } from '@dxc-technology/halstack-react';
-import { mockSubmissions, getStatusColor, getPriorityColor } from '../../data/mockSubmissions';
+import { getSubmissionsByProductType, getStatusColor, getPriorityColor } from '../../data/mockSubmissions';
 import './Dashboard.css';
 
-const Dashboard = ({ onSubmissionSelect }) => {
+const Dashboard = ({ onSubmissionSelect, productType }) => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [searchValue, setSearchValue] = useState('');
   const [isGridView, setIsGridView] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Get submissions based on product type
+  const submissions = useMemo(() => {
+    return getSubmissionsByProductType(productType);
+  }, [productType]);
+
   // Calculate metrics
   const metrics = useMemo(() => {
-    const totalSubmissions = mockSubmissions.length;
-    const newToday = mockSubmissions.filter(s => s.submittedDate === '2026-01-22').length;
-    const pendingReview = mockSubmissions.filter(s =>
+    const totalSubmissions = submissions.length;
+    const newToday = submissions.filter(s => s.submittedDate === '2026-01-22').length;
+    const pendingReview = submissions.filter(s =>
       s.status === 'Pending Review' || s.status === 'In Review'
     ).length;
-    const highPriority = mockSubmissions.filter(s => s.priority === 'High').length;
-    const approved = mockSubmissions.filter(s => s.status === 'Approved').length;
-    const declined = mockSubmissions.filter(s => s.status === 'Declined').length;
+    const highPriority = submissions.filter(s => s.priority === 'High').length;
+    const approved = submissions.filter(s => s.status === 'Approved').length;
+    const declined = submissions.filter(s => s.status === 'Declined').length;
     const avgRiskScore = Math.round(
-      mockSubmissions.reduce((sum, s) => sum + s.riskScore, 0) / totalSubmissions
+      submissions.reduce((sum, s) => sum + s.riskScore, 0) / totalSubmissions
     );
-    const totalCoverage = mockSubmissions.reduce((sum, s) => sum + s.coverageAmount, 0);
+    const totalCoverage = submissions.reduce((sum, s) => sum + s.coverageAmount, 0);
 
     return {
       totalSubmissions,
@@ -46,19 +51,29 @@ const Dashboard = ({ onSubmissionSelect }) => {
       avgRiskScore,
       totalCoverage: `$${(totalCoverage / 1000000).toFixed(1)}M`
     };
-  }, []);
+  }, [submissions]);
 
   // Filter submissions based on active tab and search
   const filteredSubmissions = useMemo(() => {
-    let filtered = [...mockSubmissions];
+    let filtered = [...submissions];
 
-    // Filter by tab
-    if (activeTabIndex === 1) {
-      filtered = filtered.filter(s => s.lineOfBusiness.includes('Term'));
-    } else if (activeTabIndex === 2) {
-      filtered = filtered.filter(s => s.lineOfBusiness.includes('Whole'));
-    } else if (activeTabIndex === 3) {
-      filtered = filtered.filter(s => s.lineOfBusiness.includes('Universal'));
+    // Filter by tab based on product type
+    if (productType === 'Life & Annuity') {
+      if (activeTabIndex === 1) {
+        filtered = filtered.filter(s => s.lineOfBusiness.includes('Term'));
+      } else if (activeTabIndex === 2) {
+        filtered = filtered.filter(s => s.lineOfBusiness.includes('Whole'));
+      } else if (activeTabIndex === 3) {
+        filtered = filtered.filter(s => s.lineOfBusiness.includes('Universal'));
+      }
+    } else if (productType === 'P&C') {
+      if (activeTabIndex === 1) {
+        filtered = filtered.filter(s => s.coverageType === 'Fleet');
+      } else if (activeTabIndex === 2) {
+        filtered = filtered.filter(s => s.coverageType === 'For-Hire');
+      } else if (activeTabIndex === 3) {
+        filtered = filtered.filter(s => s.coverageType === 'Business Use');
+      }
     }
 
     // Filter by search
@@ -71,7 +86,7 @@ const Dashboard = ({ onSubmissionSelect }) => {
     }
 
     return filtered;
-  }, [activeTabIndex, searchValue]);
+  }, [submissions, activeTabIndex, searchValue, productType]);
 
   // Paginate submissions
   const paginatedSubmissions = useMemo(() => {
@@ -385,30 +400,61 @@ const Dashboard = ({ onSubmissionSelect }) => {
               >
                 <div />
               </DxcTabs.Tab>
-              <DxcTabs.Tab
-                label="Term Life"
-                icon="favorite"
-                active={activeTabIndex === 1}
-                onClick={() => setActiveTabIndex(1)}
-              >
-                <div />
-              </DxcTabs.Tab>
-              <DxcTabs.Tab
-                label="Whole Life"
-                icon="account_balance"
-                active={activeTabIndex === 2}
-                onClick={() => setActiveTabIndex(2)}
-              >
-                <div />
-              </DxcTabs.Tab>
-              <DxcTabs.Tab
-                label="Universal Life"
-                icon="trending_up"
-                active={activeTabIndex === 3}
-                onClick={() => setActiveTabIndex(3)}
-              >
-                <div />
-              </DxcTabs.Tab>
+              {productType === 'Life & Annuity' ? (
+                <>
+                  <DxcTabs.Tab
+                    label="Term Life"
+                    icon="favorite"
+                    active={activeTabIndex === 1}
+                    onClick={() => setActiveTabIndex(1)}
+                  >
+                    <div />
+                  </DxcTabs.Tab>
+                  <DxcTabs.Tab
+                    label="Whole Life"
+                    icon="account_balance"
+                    active={activeTabIndex === 2}
+                    onClick={() => setActiveTabIndex(2)}
+                  >
+                    <div />
+                  </DxcTabs.Tab>
+                  <DxcTabs.Tab
+                    label="Universal Life"
+                    icon="trending_up"
+                    active={activeTabIndex === 3}
+                    onClick={() => setActiveTabIndex(3)}
+                  >
+                    <div />
+                  </DxcTabs.Tab>
+                </>
+              ) : (
+                <>
+                  <DxcTabs.Tab
+                    label="Fleet"
+                    icon="local_shipping"
+                    active={activeTabIndex === 1}
+                    onClick={() => setActiveTabIndex(1)}
+                  >
+                    <div />
+                  </DxcTabs.Tab>
+                  <DxcTabs.Tab
+                    label="For-Hire"
+                    icon="local_taxi"
+                    active={activeTabIndex === 2}
+                    onClick={() => setActiveTabIndex(2)}
+                  >
+                    <div />
+                  </DxcTabs.Tab>
+                  <DxcTabs.Tab
+                    label="Business Use"
+                    icon="business"
+                    active={activeTabIndex === 3}
+                    onClick={() => setActiveTabIndex(3)}
+                  >
+                    <div />
+                  </DxcTabs.Tab>
+                </>
+              )}
             </DxcTabs>
 
             {/* Toolbar */}
@@ -521,6 +567,19 @@ const Dashboard = ({ onSubmissionSelect }) => {
                         <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">
                           {submission.lineOfBusiness}
                         </DxcTypography>
+                        {productType === 'P&C' && submission.coverageType && (
+                          <>
+                            <div style={{
+                              width: "6px",
+                              height: "6px",
+                              borderRadius: "50%",
+                              backgroundColor: "var(--color-fg-neutral-strong)"
+                            }} />
+                            <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">
+                              {submission.coverageType}
+                            </DxcTypography>
+                          </>
+                        )}
                         <div style={{
                           width: "6px",
                           height: "6px",
@@ -530,6 +589,19 @@ const Dashboard = ({ onSubmissionSelect }) => {
                         <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">
                           ${(submission.coverageAmount / 1000).toLocaleString()}K
                         </DxcTypography>
+                        {productType === 'P&C' && submission.fleetSize && (
+                          <>
+                            <div style={{
+                              width: "6px",
+                              height: "6px",
+                              borderRadius: "50%",
+                              backgroundColor: "var(--color-fg-neutral-strong)"
+                            }} />
+                            <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">
+                              Fleet: {submission.fleetSize} vehicles
+                            </DxcTypography>
+                          </>
+                        )}
                         <div style={{
                           width: "6px",
                           height: "6px",
