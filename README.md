@@ -1,16 +1,109 @@
-# React + Vite
+# Underwriting Assistant
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern underwriting workbench portal built with React, Vite, and DXC Technology's Halstack design system.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Dashboard** - Overview metrics and submission queue with card/grid view toggle
+- **Underwriting Workbench** - Detailed submission review with tabs for overview, requirements, timeline, and notes
+- **Submission Intake** - Multi-step form for creating new underwriting submissions
+- **Blue Theme** - Professional blue color scheme (#0095FF primary, #0077CC hover)
+- **Halstack Components** - Enterprise-grade UI components following DXC design standards
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 18.3.1** - UI framework
+- **Vite 7.2.4** - Build tool and dev server
+- **Halstack React 16.0.0** - DXC Technology component library
+- **Emotion** - CSS-in-JS styling
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Installation
+
+```bash
+npm install
+```
+
+### Development
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) to view the application.
+
+### Build
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## Project Structure
+
+```
+src/
+  components/
+    Dashboard/              # Main dashboard view
+    UnderwritingWorkbench/ # Detailed submission review
+    SubmissionIntake/      # Multi-step intake form
+    shared/                # Reusable components
+  data/
+    mockSubmissions.js     # Sample underwriting data
+  App.jsx                  # Main layout and routing
+  main.jsx                 # Entry point
+  index.css                # Global styles
+```
+
+## Design Principles
+
+- **Halstack Design Tokens** - All spacing, colors, and styling use Halstack variables
+- **Open Sans Font** - Consistent with Halstack typography guidelines
+- **Blue Color Scheme** - #0095FF primary, #0077CC hover, NO PURPLE
+- **Tight Spacing** - Professional, compact layouts
+- **Minimal Custom CSS** - Rely on Halstack components and tokens
+
+## Key Metrics
+
+The dashboard displays:
+- Total Submissions
+- New Today
+- High Priority items
+- Total Coverage amount
+- Pending Review count
+- Approved submissions
+- Average Risk Score
+
+## Components
+
+### Dashboard
+- Metrics cards with KPIs
+- Tabbed view for filtering (All, Term Life, Whole Life, Universal Life)
+- Search functionality
+- Card/Grid view toggle
+- Pagination
+
+### Underwriting Workbench
+- Summary cards (Status, Priority, Coverage, Risk Score, Assigned To)
+- Tabbed interface (Overview, Requirements, Timeline, Notes)
+- Requirement tracking with progress bar
+- Activity timeline
+- Notes section
+
+### Submission Intake
+- 4-step form wizard with progress bar
+- Applicant Information
+- Coverage Information
+- Medical Information
+- Additional Information
+- Success confirmation with next steps
+
+## License
+
+© 2026 Insurance Company. All rights reserved.
