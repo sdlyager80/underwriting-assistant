@@ -65,7 +65,7 @@ function App() {
     {
       label: "Submissions",
       icon: "folder_open",
-      selected: currentView === 'submissions' || currentView === 'intake',
+      selected: currentView === 'submissions' || currentView === 'intake' || currentView === 'dashboard',
       onClick: () => handleNavigationClick('dashboard'),
       items: [
         {
