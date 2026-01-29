@@ -1,1 +1,261 @@
-/* Minimal UnderwritingWorkbench styles */
+/* Risk Indicator Cards */
+.risk-indicator-card {
+  padding: var(--spacing-padding-m);
+  border-radius: var(--border-radius-m);
+  border-left: 4px solid;
+  background-color: var(--color-bg-neutral-lightest);
+  flex: 1;
+  min-width: 280px;
+}
+
+.risk-indicator-card.risk-warning {
+  border-left-color: #FF6B00;
+  background-color: #FFF4E5;
+}
+
+.risk-indicator-card.risk-error {
+  border-left-color: #D0021B;
+  background-color: #FFF0F0;
+}
+
+.risk-indicator-card.risk-info {
+  border-left-color: #0095FF;
+  background-color: #F0F8FF;
+}
+
+/* Info Section */
+.info-section {
+  padding: var(--spacing-padding-m);
+  background-color: var(--color-bg-neutral-lightest);
+  border-radius: var(--border-radius-m);
+  border: 1px solid var(--color-border-neutral-lighter);
+}
+
+.info-icon {
+  color: #0095FF;
+  font-size: 20px;
+}
+
+/* Data Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-bg-neutral-lightest);
+  border-radius: var(--border-radius-m);
+  overflow: hidden;
+}
+
+.data-table thead {
+  background-color: #0095FF;
+  color: white;
+}
+
+.data-table th {
+  padding: var(--spacing-padding-m);
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.data-table td {
+  padding: var(--spacing-padding-m);
+  border-bottom: 1px solid var(--color-border-neutral-lighter);
+  font-size: 14px;
+}
+
+.data-table tbody tr:hover {
+  background-color: var(--color-bg-neutral-lighter);
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-link {
+  color: #0095FF;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.table-link:hover {
+  text-decoration: underline;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-s);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.status-available {
+  background-color: #E8F5E9;
+  color: #24A148;
+}
+
+.order-btn {
+  background-color: #F0F8FF;
+  border: 1px solid #0095FF;
+  color: #0095FF;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-s);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.order-btn:hover {
+  background-color: #0095FF;
+  color: white;
+}
+
+/* Document Upload Table */
+.document-upload-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-bg-neutral-lightest);
+  border-radius: var(--border-radius-m);
+  overflow: hidden;
+}
+
+.document-upload-table thead {
+  background-color: #0095FF;
+  color: white;
+}
+
+.document-upload-table th {
+  padding: var(--spacing-padding-m);
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.document-upload-table td {
+  padding: var(--spacing-padding-m);
+  border-bottom: 1px solid var(--color-border-neutral-lighter);
+  font-size: 14px;
+}
+
+.document-upload-table tbody tr:hover {
+  background-color: var(--color-bg-neutral-lighter);
+}
+
+.upload-section {
+  padding: var(--spacing-padding-m);
+  background-color: var(--color-bg-neutral-lightest);
+  border-radius: var(--border-radius-m);
+  border: 1px solid var(--color-border-neutral-lighter);
+}
+
+.select-file-btn {
+  padding: var(--spacing-padding-s) var(--spacing-padding-m);
+  background-color: white;
+  border: 1px solid var(--color-border-neutral-medium);
+  border-radius: var(--border-radius-s);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.select-file-btn:hover {
+  background-color: var(--color-bg-neutral-lighter);
+  border-color: #0095FF;
+}
+
+/* Notes Table */
+.notes-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-bg-neutral-lightest);
+  border-radius: var(--border-radius-m);
+  overflow: hidden;
+}
+
+.notes-table thead {
+  background-color: #0095FF;
+  color: white;
+}
+
+.notes-table th {
+  padding: var(--spacing-padding-m);
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.notes-table td {
+  padding: var(--spacing-padding-m);
+  border-bottom: 1px solid var(--color-border-neutral-lighter);
+  font-size: 14px;
+}
+
+.notes-table tbody tr:hover {
+  background-color: var(--color-bg-neutral-lighter);
+}
+
+/* Messages Table */
+.messages-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-bg-neutral-lightest);
+  border-radius: var(--border-radius-m);
+  overflow: hidden;
+}
+
+.messages-table thead {
+  background-color: #0095FF;
+  color: white;
+}
+
+.messages-table th {
+  padding: var(--spacing-padding-m);
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.messages-table td {
+  padding: var(--spacing-padding-m);
+  border-bottom: 1px solid var(--color-border-neutral-lighter);
+  font-size: 14px;
+}
+
+.messages-table tbody tr:hover {
+  background-color: var(--color-bg-neutral-lighter);
+}
+
+/* Message Tabs */
+.message-tabs {
+  display: flex;
+  gap: var(--spacing-gap-xs);
+  margin-bottom: var(--spacing-gap-m);
+  border-bottom: 2px solid var(--color-border-neutral-lighter);
+}
+
+.message-tab {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: var(--spacing-padding-s) var(--spacing-padding-m);
+  cursor: pointer;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-fg-neutral-stronger);
+  transition: all 0.2s ease;
+  margin-bottom: -2px;
+}
+
+.message-tab:hover {
+  color: #0095FF;
+  background-color: var(--color-bg-neutral-lighter);
+}
+
+.message-tab.active {
+  color: #0095FF;
+  border-bottom-color: #0095FF;
+  font-weight: 600;
+}
