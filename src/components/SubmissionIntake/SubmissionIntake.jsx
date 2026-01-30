@@ -11,7 +11,13 @@ import {
   DxcAccordion,
   DxcDialog,
 } from '@dxc-technology/halstack-react';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
 import './SubmissionIntake.css';
+
+// Configure PDF.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 const SubmissionIntake = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -53,6 +59,12 @@ const SubmissionIntake = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showProcessingBanner, setShowProcessingBanner] = useState(true);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showDocProcessingModal, setShowDocProcessingModal] = useState(false);
+  const [dontShowDocProcessingAgain, setDontShowDocProcessingAgain] = useState(false);
+  const [showViewSource, setShowViewSource] = useState(false);
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [scale, setScale] = useState(1.0);
 
   const submissionId = '00123224';
 
@@ -71,14 +83,22 @@ const SubmissionIntake = () => {
   ];
 
   const handleFileUpload = (files, isSupport = false) => {
-    const newFiles = Array.from(files).map((file, index) => ({
-      id: Date.now() + index,
-      name: file.name,
-      size: (file.size / 1024).toFixed(2) + ' KB',
-      uploadDate: new Date().toLocaleDateString(),
-      documentType: isSupport ? 'Loss Runs' : 'ACORD 125',
-      description: isSupport ? '' : 'Commercial Auto Application',
-    }));
+    const newFiles = Array.from(files).map((file, index) => {
+      // Create a URL for the file to display it
+      const fileUrl = URL.createObjectURL(file);
+
+      return {
+        id: Date.now() + index,
+        name: file.name,
+        size: (file.size / 1024).toFixed(2) + ' KB',
+        uploadDate: new Date().toLocaleDateString(),
+        documentType: isSupport ? 'Loss Runs' : 'ACORD 125',
+        description: isSupport ? '' : 'Commercial Auto Application',
+        file: file,
+        fileUrl: fileUrl,
+        fileType: file.type,
+      };
+    });
 
     if (isSupport) {
       setSupportDocs([...supportDocs, ...newFiles]);
@@ -89,18 +109,33 @@ const SubmissionIntake = () => {
 
   const handleNextStep = () => {
     if (currentStep < 4) {
-      setCurrentStep(currentStep + 1);
+      // Show Documents for Processing modal when moving from step 2 to step 3
+      if (currentStep === 2 && !dontShowDocProcessingAgain) {
+        setShowDocProcessingModal(true);
+      } else {
+        setCurrentStep(currentStep + 1);
 
-      // Simulate processing when moving to step 3
-      if (currentStep === 2) {
-        setIsProcessing(true);
-        setShowProcessingBanner(true);
-        // Simulate processing completion after 5 seconds
-        setTimeout(() => {
-          setIsProcessing(false);
-        }, 5000);
+        // Simulate processing when moving to step 3
+        if (currentStep === 2) {
+          setIsProcessing(true);
+          setShowProcessingBanner(true);
+          // Simulate processing completion after 5 seconds
+          setTimeout(() => {
+            setIsProcessing(false);
+          }, 5000);
+        }
       }
     }
+  };
+
+  const handleContinueToStep3 = () => {
+    setShowDocProcessingModal(false);
+    setCurrentStep(3);
+    setIsProcessing(true);
+    setShowProcessingBanner(true);
+    setTimeout(() => {
+      setIsProcessing(false);
+    }, 5000);
   };
 
   const handlePreviousStep = () => {
@@ -368,17 +403,23 @@ const SubmissionIntake = () => {
         )}
 
         <DxcFlex justifyContent="flex-end">
-          <button className="view-toggle-btn">
+          <button
+            className={`view-toggle-btn ${showViewSource ? 'active' : ''}`}
+            onClick={() => setShowViewSource(!showViewSource)}
+          >
             <DxcFlex alignItems="center" gap="var(--spacing-gap-xs)">
               <span className="material-icons" style={{ fontSize: '18px' }}>description</span>
-              <span>View Source</span>
+              <span>{showViewSource ? 'Hide Source' : 'View Source'}</span>
             </DxcFlex>
           </button>
         </DxcFlex>
 
-        {/* Named Insured Information */}
-        <div className="form-section">
-          <DxcHeading level={5} text="Named Insured Information" />
+        {/* Side-by-side layout when View Source is active */}
+        <div className={showViewSource ? 'extraction-container side-by-side' : 'extraction-container'}>
+          <div className="extraction-fields">
+            {/* Named Insured Information */}
+            <div className="form-section">
+              <DxcHeading level={5} text="Named Insured Information" />
           <DxcFlex direction="column" gap="var(--spacing-gap-m)">
             <DxcTextInput
               label="Named Insured"
@@ -554,6 +595,151 @@ const SubmissionIntake = () => {
             </DxcFlex>
           </DxcFlex>
         </div>
+          </div>
+
+          {/* Document Viewer - shown when View Source is active */}
+          {showViewSource && (
+            <div className="document-viewer">
+              <DxcFlex direction="column" gap="var(--spacing-gap-m)">
+                <DxcHeading level={5} text={`Source Document - ${uploadedForms.length > 0 ? uploadedForms[0].documentType : 'ACORD 125'}`} />
+                <div className="document-preview">
+                  {uploadedForms.length > 0 && uploadedForms[0].fileUrl ? (
+                    // Display actual uploaded document
+                    uploadedForms[0].fileType === 'application/pdf' ? (
+                      // PDF viewer using react-pdf
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-gap-s)', width: '100%' }}>
+                        {/* Zoom Controls */}
+                        <DxcFlex alignItems="center" justifyContent="center" gap="var(--spacing-gap-s)" style={{ padding: 'var(--spacing-padding-xs)', backgroundColor: 'var(--color-bg-neutral-lighter)', borderRadius: 'var(--border-radius-s)' }}>
+                          <button
+                            className="zoom-btn"
+                            onClick={() => setScale(Math.max(0.5, scale - 0.25))}
+                            disabled={scale <= 0.5}
+                            title="Zoom Out"
+                          >
+                            <span className="material-icons" style={{ fontSize: '18px' }}>remove</span>
+                          </button>
+                          <DxcTypography fontSize="font-scale-01" fontWeight="font-weight-semibold">
+                            {Math.round(scale * 100)}%
+                          </DxcTypography>
+                          <button
+                            className="zoom-btn"
+                            onClick={() => setScale(Math.min(2.0, scale + 0.25))}
+                            disabled={scale >= 2.0}
+                            title="Zoom In"
+                          >
+                            <span className="material-icons" style={{ fontSize: '18px' }}>add</span>
+                          </button>
+                          <button
+                            className="zoom-btn"
+                            onClick={() => setScale(1.0)}
+                            title="Reset Zoom"
+                          >
+                            <span className="material-icons" style={{ fontSize: '18px' }}>refresh</span>
+                          </button>
+                        </DxcFlex>
+
+                        {/* PDF Document */}
+                        <div style={{ overflowY: 'auto', maxHeight: '700px', display: 'flex', justifyContent: 'center' }}>
+                          <Document
+                            file={uploadedForms[0].fileUrl}
+                            onLoadSuccess={({ numPages }) => {
+                              setNumPages(numPages);
+                              setPageNumber(1);
+                            }}
+                            onLoadError={(error) => console.error('Error loading PDF:', error)}
+                          >
+                            <Page
+                              pageNumber={pageNumber}
+                              scale={scale}
+                              renderTextLayer={true}
+                              renderAnnotationLayer={true}
+                            />
+                          </Document>
+                        </div>
+
+                        {/* PDF Page Navigation Controls */}
+                        {numPages && numPages > 1 && (
+                          <DxcFlex alignItems="center" justifyContent="center" gap="var(--spacing-gap-m)" style={{ padding: 'var(--spacing-padding-s)', backgroundColor: 'var(--color-bg-neutral-lighter)', borderRadius: 'var(--border-radius-s)' }}>
+                            <DxcButton
+                              label="Previous"
+                              mode="secondary"
+                              size="small"
+                              disabled={pageNumber <= 1}
+                              onClick={() => setPageNumber(pageNumber - 1)}
+                            />
+                            <DxcTypography fontSize="font-scale-02" fontWeight="font-weight-semibold">
+                              Page {pageNumber} of {numPages}
+                            </DxcTypography>
+                            <DxcButton
+                              label="Next"
+                              mode="secondary"
+                              size="small"
+                              disabled={pageNumber >= numPages}
+                              onClick={() => setPageNumber(pageNumber + 1)}
+                            />
+                          </DxcFlex>
+                        )}
+                      </div>
+                    ) : uploadedForms[0].fileType.startsWith('image/') ? (
+                      // Image viewer
+                      <img
+                        src={uploadedForms[0].fileUrl}
+                        alt={uploadedForms[0].name}
+                        style={{
+                          maxWidth: '100%',
+                          height: 'auto',
+                          objectFit: 'contain',
+                        }}
+                      />
+                    ) : (
+                      // Unsupported file type - show placeholder
+                      <DxcFlex direction="column" alignItems="center" justifyContent="center" style={{ height: '100%', padding: 'var(--spacing-padding-xl)' }}>
+                        <span className="material-icons" style={{ fontSize: '120px', color: 'var(--color-blue-600, #0095FF)', marginBottom: 'var(--spacing-gap-m)' }}>description</span>
+                        <DxcTypography fontSize="font-scale-03" fontWeight="font-weight-semibold" color="var(--color-fg-neutral-stronger)">
+                          {uploadedForms[0].name}
+                        </DxcTypography>
+                        <DxcTypography fontSize="font-scale-02" color="var(--color-fg-neutral-medium)" style={{ marginTop: 'var(--spacing-gap-s)' }}>
+                          Preview not available for this file type
+                        </DxcTypography>
+                      </DxcFlex>
+                    )
+                  ) : (
+                    // No document uploaded - show placeholder
+                    <DxcFlex direction="column" alignItems="center" justifyContent="center" style={{ height: '100%', padding: 'var(--spacing-padding-xl)' }}>
+                      <span className="material-icons" style={{ fontSize: '120px', color: 'var(--color-blue-600, #0095FF)', marginBottom: 'var(--spacing-gap-m)' }}>description</span>
+                      <DxcTypography fontSize="font-scale-03" fontWeight="font-weight-semibold" color="var(--color-fg-neutral-stronger)">
+                        ACORD 125 - Commercial Auto Application
+                      </DxcTypography>
+                      <DxcTypography fontSize="font-scale-02" color="var(--color-fg-neutral-medium)" style={{ marginTop: 'var(--spacing-gap-s)' }}>
+                        No document uploaded yet
+                      </DxcTypography>
+                    </DxcFlex>
+                  )}
+                </div>
+              </DxcFlex>
+            </div>
+          )}
+        </div>
+
+        {/* Ask to Edit Floating Toolbar - shown when errors or low confidence exist */}
+        {(validationSummary.errorCount > 0 || validationSummary.lowConfCount > 0) && (
+          <div className="ask-to-edit-toolbar">
+            <DxcFlex alignItems="center" justifyContent="space-between" gap="var(--spacing-gap-m)">
+              <DxcFlex alignItems="center" gap="var(--spacing-gap-m)">
+                <span className="material-icons" style={{ color: '#0095FF' }}>edit</span>
+                <DxcTypography fontSize="font-scale-02" fontWeight="font-weight-semibold">
+                  Found {validationSummary.errorCount + validationSummary.lowConfCount} field{validationSummary.errorCount + validationSummary.lowConfCount !== 1 ? 's' : ''} needing review
+                </DxcTypography>
+              </DxcFlex>
+              <DxcButton
+                label="Ask to Edit"
+                mode="primary"
+                size="small"
+                onClick={() => {}}
+              />
+            </DxcFlex>
+          </div>
+        )}
       </DxcFlex>
     </DxcInset>
   );
@@ -736,6 +922,55 @@ const SubmissionIntake = () => {
                 mode="primary"
                 onClick={() => setShowSuccessModal(false)}
               />
+            </DxcFlex>
+          </div>
+        </DxcDialog>
+      )}
+
+      {/* Documents for Processing Modal */}
+      {showDocProcessingModal && (
+        <DxcDialog onCloseClick={() => setShowDocProcessingModal(false)}>
+          <div style={{ padding: 'var(--spacing-padding-l)', minWidth: '500px' }}>
+            <DxcFlex direction="column" gap="var(--spacing-gap-l)">
+              <DxcFlex alignItems="flex-start" gap="var(--spacing-gap-m)">
+                <span className="material-icons" style={{ color: '#0095FF', fontSize: '32px' }}>info</span>
+                <DxcFlex direction="column" gap="var(--spacing-gap-s)">
+                  <DxcHeading level={3} text="Documents for Processing" />
+                  <DxcTypography fontSize="font-scale-02" color="var(--color-fg-neutral-stronger)">
+                    The documents you uploaded are currently being processed by our AI extraction engine. This typically takes 2-5 minutes depending on document complexity.
+                  </DxcTypography>
+                  <DxcTypography fontSize="font-scale-02" color="var(--color-fg-neutral-stronger)" style={{ marginTop: 'var(--spacing-gap-s)' }}>
+                    You can proceed to the next step to review the extracted data. The system will notify you if any fields require attention due to validation errors or low AI confidence.
+                  </DxcTypography>
+                </DxcFlex>
+              </DxcFlex>
+
+              <div style={{ borderTop: '1px solid var(--color-border-neutral-lighter)', paddingTop: 'var(--spacing-gap-m)' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-gap-s)', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={dontShowDocProcessingAgain}
+                    onChange={(e) => setDontShowDocProcessingAgain(e.target.checked)}
+                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                  />
+                  <DxcTypography fontSize="font-scale-02">
+                    Do not show this message again
+                  </DxcTypography>
+                </label>
+              </div>
+
+              <DxcFlex justifyContent="flex-end" gap="var(--spacing-gap-m)">
+                <DxcButton
+                  label="Cancel"
+                  mode="secondary"
+                  onClick={() => setShowDocProcessingModal(false)}
+                />
+                <DxcButton
+                  label="Continue"
+                  mode="primary"
+                  onClick={handleContinueToStep3}
+                />
+              </DxcFlex>
             </DxcFlex>
           </div>
         </DxcDialog>

@@ -39,6 +39,10 @@ const UnderwritingWorkbench = ({ submission }) => {
   const [showAddNoteModal, setShowAddNoteModal] = useState(false);
   const [newNoteType, setNewNoteType] = useState('Reminder');
   const [newNoteText, setNewNoteText] = useState('');
+  const [showNewMessageModal, setShowNewMessageModal] = useState(false);
+  const [newMessageTo, setNewMessageTo] = useState('');
+  const [newMessageSubject, setNewMessageSubject] = useState('');
+  const [newMessageBody, setNewMessageBody] = useState('');
   const [validationErrors] = useState([
     'Vehicles: VIN ID is invalid',
     'Coverage type is missing for Rental Reimbursement for vehicle 1',
@@ -834,7 +838,7 @@ const UnderwritingWorkbench = ({ submission }) => {
                   <DxcButton
                     label="+ New Message"
                     mode="primary"
-                    onClick={() => {}}
+                    onClick={() => setShowNewMessageModal(true)}
                   />
                 </DxcFlex>
 
@@ -1209,6 +1213,88 @@ const UnderwritingWorkbench = ({ submission }) => {
                     setShowAddNoteModal(false);
                     setNewNoteText('');
                     setNewNoteType('Reminder');
+                  }}
+                />
+              </DxcFlex>
+            </DxcFlex>
+          </div>
+        </DxcDialog>
+      )}
+
+      {/* New Message Modal */}
+      {showNewMessageModal && (
+        <DxcDialog onCloseClick={() => setShowNewMessageModal(false)}>
+          <div style={{ padding: 'var(--spacing-padding-l)', minWidth: '600px' }}>
+            <DxcFlex direction="column" gap="var(--spacing-gap-m)">
+              <DxcHeading level={3} text="New Message" />
+
+              <DxcTextInput
+                label="To"
+                placeholder="Enter recipient email..."
+                value={newMessageTo}
+                onChange={({ value }) => setNewMessageTo(value)}
+                size="fillParent"
+              />
+
+              <DxcTextInput
+                label="Subject"
+                placeholder="Enter message subject..."
+                value={newMessageSubject}
+                onChange={({ value }) => setNewMessageSubject(value)}
+                size="fillParent"
+              />
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-gap-xs)' }}>
+                <label style={{
+                  fontSize: 'var(--font-scale-02)',
+                  fontWeight: 'var(--font-weight-semibold)',
+                  color: 'var(--color-fg-neutral-stronger)'
+                }}>
+                  Message
+                </label>
+                <textarea
+                  placeholder="Enter your message here..."
+                  value={newMessageBody}
+                  onChange={(e) => setNewMessageBody(e.target.value)}
+                  rows={8}
+                  style={{
+                    width: '100%',
+                    padding: 'var(--spacing-padding-m)',
+                    fontSize: 'var(--font-scale-02)',
+                    fontFamily: 'var(--font-family-sans)',
+                    border: '1px solid var(--color-border-neutral-medium)',
+                    borderRadius: 'var(--border-radius-s)',
+                    resize: 'vertical',
+                  }}
+                />
+              </div>
+
+              <DxcFlex justifyContent="flex-end" gap="var(--spacing-gap-m)">
+                <DxcButton
+                  label="Cancel"
+                  mode="secondary"
+                  onClick={() => {
+                    setShowNewMessageModal(false);
+                    setNewMessageTo('');
+                    setNewMessageSubject('');
+                    setNewMessageBody('');
+                  }}
+                />
+                <DxcButton
+                  label="Send Message"
+                  mode="primary"
+                  onClick={() => {
+                    const newMessage = {
+                      date: new Date().toLocaleDateString(),
+                      subject: newMessageSubject,
+                      from: 'you@assuremail.com',
+                      message: newMessageBody
+                    };
+                    setMessages([newMessage, ...messages]);
+                    setShowNewMessageModal(false);
+                    setNewMessageTo('');
+                    setNewMessageSubject('');
+                    setNewMessageBody('');
                   }}
                 />
               </DxcFlex>

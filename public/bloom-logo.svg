@@ -1,0 +1,18 @@
+<svg width="180" height="50" viewBox="0 0 180 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bloom Flower Icon -->
+  <g transform="translate(5, 5)">
+    <!-- Top petal (Orange) -->
+    <path d="M20 2L24 12L20 16L16 12L20 2Z" fill="#FF8C42"/>
+    <!-- Right petal (Green) -->
+    <path d="M34 16L24 12L20 16L24 20L34 16Z" fill="#5CB85C"/>
+    <!-- Bottom petal (Lime) -->
+    <path d="M20 30L24 20L20 16L16 20L20 30Z" fill="#D4E157"/>
+    <!-- Left petal (Blue) -->
+    <path d="M6 16L16 12L20 16L16 20L6 16Z" fill="#2196F3"/>
+    <!-- Center petal (Cyan) -->
+    <path d="M20 16L24 20L20 24L16 20L20 16Z" fill="#00BCD4"/>
+  </g>
+
+  <!-- Bloom Text -->
+  <text x="55" y="32" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#666">Bloom</text>
+</svg>

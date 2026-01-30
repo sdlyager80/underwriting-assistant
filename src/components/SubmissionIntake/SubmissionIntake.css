@@ -208,3 +208,108 @@
   background-color: var(--color-orange-600, #FF6B00);
   display: inline-block;
 }
+
+/* Side-by-Side Layout */
+.extraction-container {
+  width: 100%;
+}
+
+.extraction-container.side-by-side {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-gap-l);
+}
+
+.extraction-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-gap-l);
+}
+
+/* Document Viewer */
+.document-viewer {
+  position: sticky;
+  top: var(--spacing-gap-l);
+  height: fit-content;
+  max-height: calc(100vh - 200px);
+}
+
+.document-preview {
+  background-color: var(--color-bg-neutral-lightest);
+  border: 1px solid var(--color-border-neutral-lighter);
+  border-radius: var(--border-radius-m);
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+/* View Toggle Button */
+.view-toggle-btn {
+  background: var(--color-bg-neutral-lightest);
+  border: 1px solid var(--color-border-neutral-medium);
+  color: var(--color-fg-neutral-stronger);
+  cursor: pointer;
+  font-family: var(--font-family-sans);
+  font-size: var(--font-scale-02);
+  padding: var(--spacing-padding-xs) var(--spacing-padding-s);
+  border-radius: var(--border-radius-s);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-gap-xs);
+}
+
+.view-toggle-btn:hover {
+  border-color: var(--color-blue-600, #0095FF);
+  color: var(--color-blue-600, #0095FF);
+}
+
+.view-toggle-btn.active {
+  background-color: var(--color-blue-600, #0095FF);
+  color: var(--color-white, white);
+  border-color: var(--color-blue-600, #0095FF);
+}
+
+/* Ask to Edit Floating Toolbar */
+.ask-to-edit-toolbar {
+  position: fixed;
+  bottom: var(--spacing-gap-l);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-bg-neutral-lightest);
+  border: 2px solid var(--color-blue-600, #0095FF);
+  border-radius: var(--border-radius-m);
+  padding: var(--spacing-padding-m) var(--spacing-padding-l);
+  box-shadow: var(--shadow-mid-02);
+  z-index: 1000;
+  min-width: 400px;
+}
+
+/* Zoom Controls */
+.zoom-btn {
+  background: var(--color-bg-neutral-lightest);
+  border: 1px solid var(--color-border-neutral-medium);
+  color: var(--color-fg-neutral-stronger);
+  cursor: pointer;
+  padding: var(--spacing-padding-xxs);
+  border-radius: var(--border-radius-s);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  width: 32px;
+  height: 32px;
+}
+
+.zoom-btn:hover:not(:disabled) {
+  background-color: var(--color-blue-600, #0095FF);
+  color: var(--color-white, white);
+  border-color: var(--color-blue-600, #0095FF);
+}
+
+.zoom-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

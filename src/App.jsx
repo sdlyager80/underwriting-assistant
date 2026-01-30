@@ -102,11 +102,7 @@ function App() {
                 <path d="M30 20L32.5 27.5L40 25L37.5 32.5L45 35L37.5 37.5L40 45L32.5 42.5L30 50L27.5 42.5L20 45L22.5 37.5L15 35L22.5 32.5L20 25L27.5 27.5L30 20Z" fill="#2196F3"/>
               </svg>
               <DxcTypography fontSize="font-scale-04" fontWeight="font-weight-semibold">
-                Bloom
-              </DxcTypography>
-              <div style={{ width: '1px', height: '32px', backgroundColor: 'var(--color-bg-neutral-light)', margin: '0 var(--spacing-gap-s)' }} />
-              <DxcTypography fontSize="font-scale-03" color="var(--color-fg-neutral-stronger)">
-                Underwriter Assistant
+                Bloom Insurance
               </DxcTypography>
             </DxcFlex>
           )}
