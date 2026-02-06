@@ -64,12 +64,12 @@ function App() {
     },
     {
       label: "Submissions",
-      icon: "folder_open",
+      icon: "assignment",
       selected: currentView === 'intake',
       items: [
         {
           label: "New Submission",
-          icon: "add",
+          icon: "note_add",
           selected: currentView === 'intake',
           onClick: () => handleNavigationClick('intake')
         }
@@ -82,8 +82,8 @@ function App() {
       onClick: () => handleNavigationClick('dashboard')
     },
     {
-      label: "Renewals and Servicing",
-      icon: "autorenew",
+      label: "Renewals",
+      icon: "event_repeat",
       selected: currentView === 'renewals',
       onClick: () => handleNavigationClick('dashboard')
     },
@@ -94,59 +94,68 @@ function App() {
       header={(
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '64px', padding: '0 24px', backgroundColor: '#ffffff', borderBottom: '1px solid #e0e0e0' }}>
           <DxcFlex gap="var(--spacing-gap-m)" alignItems="center">
-            {/* Bloom Logo */}
-            <svg width="32" height="32" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M30 0L37.5 15L52.5 7.5L45 22.5L60 30L45 37.5L52.5 52.5L37.5 45L30 60L22.5 45L7.5 52.5L15 37.5L0 30L15 22.5L7.5 7.5L22.5 15L30 0Z" fill="#4CAF50"/>
-              <path d="M30 15L35 25L45 20L40 30L50 35L40 40L45 50L35 45L30 55L25 45L15 50L20 40L10 35L20 30L15 20L25 25L30 15Z" fill="#FFC107"/>
-              <path d="M30 20L32.5 27.5L40 25L37.5 32.5L45 35L37.5 37.5L40 45L32.5 42.5L30 50L27.5 42.5L20 45L22.5 37.5L15 35L22.5 32.5L20 25L27.5 27.5L30 20Z" fill="#2196F3"/>
-            </svg>
-            <DxcTypography fontSize="font-scale-04" fontWeight="font-weight-semibold" style={{ color: '#000000' }}>
+            {/* Bloom Insurance Logo */}
+            <img
+              src="/bloom-logo.svg"
+              alt="Bloom Insurance"
+              style={{ height: '40px', width: 'auto' }}
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
+            />
+            <div style={{ width: '1px', height: '28px', backgroundColor: '#e0e0e0' }} />
+            <DxcTypography fontSize="font-scale-03" fontWeight="font-weight-semibold" color="#333333">
               Underwriter Assistant
             </DxcTypography>
           </DxcFlex>
 
           <DxcFlex gap="var(--spacing-gap-m)" alignItems="center">
-            {/* Assure Answers Chat Icon */}
+            {/* Search Icon */}
             <button
-              onClick={() => alert('Assure Answers chat would open here')}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '50%',
-              }}
-              title="Assure Answers - AI Assistant"
+              onClick={() => alert('Search functionality would open here')}
+              className="header-icon-btn"
+              title="Search"
             >
-              <span className="material-icons" style={{ fontSize: '24px', color: '#0095FF' }}>
-                chat
+              <span className="material-icons" style={{ fontSize: '22px', color: '#666666' }}>
+                search
               </span>
             </button>
 
+            {/* Assure Answers Chat Icon */}
+            <button
+              onClick={() => alert('Assure Answers chat would open here')}
+              className="header-icon-btn"
+              title="Assure Answers - AI Assistant"
+            >
+              <span className="material-icons" style={{ fontSize: '22px', color: '#1B75BB' }}>
+                smart_toy
+              </span>
+            </button>
+
+            {/* Divider */}
+            <div style={{ width: '1px', height: '28px', backgroundColor: '#e0e0e0' }} />
+
             <DxcFlex direction="column" gap="var(--spacing-gap-none)" alignItems="flex-end">
-              <DxcTypography fontWeight="font-weight-semibold">{user.name}</DxcTypography>
+              <DxcTypography fontWeight="font-weight-semibold" fontSize="font-scale-02">{user.name}</DxcTypography>
               <DxcTypography
                 fontSize="font-scale-01"
-                color="var(--color-fg-neutral-stronger)"
+                color="var(--color-fg-neutral-medium)"
               >
-                {user.domain}
+                {user.role}
               </DxcTypography>
             </DxcFlex>
             <div
               style={{
-                width: "40px",
-                height: "40px",
+                width: "36px",
+                height: "36px",
                 borderRadius: "50%",
-                backgroundColor: "#0095FF",
+                backgroundColor: "#1B75BB",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 color: "white",
                 fontWeight: "600",
-                fontSize: "16px",
+                fontSize: "14px",
               }}
             >
               {user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
@@ -160,6 +169,26 @@ function App() {
           expanded={sidenavExpanded}
           onExpandedChange={setSidenavExpanded}
         />
+      }
+      footer={
+        <div className="app-footer">
+          <DxcFlex justifyContent="space-between" alignItems="center" style={{ width: '100%', padding: '0 24px' }}>
+            <DxcTypography fontSize="font-scale-01" color="#808285">
+              &copy; 2026 Bloom Insurance. All rights reserved.
+            </DxcTypography>
+            <DxcFlex gap="var(--spacing-gap-l)" alignItems="center">
+              <DxcTypography fontSize="font-scale-01" color="#808285">
+                Privacy Policy
+              </DxcTypography>
+              <DxcTypography fontSize="font-scale-01" color="#808285">
+                Terms of Service
+              </DxcTypography>
+              <DxcTypography fontSize="font-scale-01" color="#808285">
+                Contact Support
+              </DxcTypography>
+            </DxcFlex>
+          </DxcFlex>
+        </div>
       }
     >
       <DxcApplicationLayout.Main>

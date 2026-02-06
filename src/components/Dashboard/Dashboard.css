@@ -1,45 +1,66 @@
 /* Dashboard Styles - Bloom Design */
 
-.metric-card {
-  background-color: var(--color-bg-neutral-lightest);
+/* Metric Cards - Shared */
+.metric-card,
+.metric-card-highlight,
+.metric-card-warning,
+.metric-card-success,
+.metric-card-error {
   border-radius: var(--border-radius-m);
   box-shadow: var(--shadow-mid-02);
   padding: var(--spacing-padding-m);
-  min-width: 120px;
+  min-width: 140px;
+  flex: 1 1 calc(14.28% - var(--spacing-gap-m));
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.metric-card {
+  background-color: var(--color-bg-neutral-lightest);
 }
 
 .metric-card-highlight {
-  background: linear-gradient(135deg, var(--color-blue-400, #4DD0E1) 0%, var(--color-blue-600, #0095FF) 100%);
-  border-radius: var(--border-radius-m);
-  box-shadow: var(--shadow-mid-02);
-  padding: var(--spacing-padding-m);
-  min-width: 160px;
+  background: linear-gradient(135deg, #00ADEE 0%, #1B75BB 100%);
 }
 
 .metric-card-warning {
-  background: linear-gradient(135deg, var(--color-orange-400, #FFA726) 0%, var(--color-orange-600, #FF6B00) 100%);
-  border-radius: var(--border-radius-m);
-  box-shadow: var(--shadow-mid-02);
-  padding: var(--spacing-padding-m);
-  min-width: 160px;
+  background: linear-gradient(135deg, #F6921E 0%, #E07B00 100%);
 }
 
 .metric-card-success {
-  background: linear-gradient(135deg, var(--color-green-400, #66BB6A) 0%, var(--color-green-600, #24A148) 100%);
-  border-radius: var(--border-radius-m);
-  box-shadow: var(--shadow-mid-02);
-  padding: var(--spacing-padding-m);
-  min-width: 160px;
+  background: linear-gradient(135deg, #8BC53F 0%, #37A526 100%);
 }
 
 .metric-card-error {
-  background: linear-gradient(135deg, var(--color-red-400, #EF5350) 0%, var(--color-red-600, #D0021B) 100%);
-  border-radius: var(--border-radius-m);
-  box-shadow: var(--shadow-mid-02);
-  padding: var(--spacing-padding-m);
-  min-width: 160px;
+  background: linear-gradient(135deg, #EF5350 0%, #D0021B 100%);
 }
 
+.metric-icon-container {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-s);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.metric-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Submissions Container */
+.submissions-container {
+  background-color: var(--color-bg-neutral-lightest);
+  border-radius: var(--border-radius-m);
+  box-shadow: var(--shadow-mid-02);
+  padding: var(--spacing-padding-l);
+}
+
+/* Submission Cards */
 .submission-card {
   background-color: var(--color-bg-neutral-lightest);
   border: 1px solid var(--color-border-neutral-lighter);
@@ -51,30 +72,47 @@
 
 .submission-card:hover {
   box-shadow: var(--shadow-mid-02);
-  border-color: var(--color-blue-600, #0095FF);
+  border-color: #1B75BB;
 }
 
-.view-toggle-btn {
-  background: none;
-  border: none;
-  color: var(--color-fg-neutral-stronger);
-  cursor: pointer;
-  font-family: var(--font-family-sans);
-  font-size: var(--font-scale-02);
-  padding: var(--spacing-padding-xs) var(--spacing-padding-s);
+/* View Toggle - Icon Buttons */
+.view-toggle-group {
+  display: flex;
+  border: 1px solid var(--color-border-neutral-medium);
   border-radius: var(--border-radius-s);
+  overflow: hidden;
+}
+
+.view-toggle-icon-btn {
+  background: var(--color-bg-neutral-lightest);
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s ease;
+  color: var(--color-fg-neutral-stronger);
 }
 
-.view-toggle-btn.active {
-  color: var(--color-blue-600, #0095FF);
-  font-weight: var(--font-weight-semibold);
+.view-toggle-icon-btn:first-child {
+  border-right: 1px solid var(--color-border-neutral-medium);
 }
 
-.view-toggle-btn:hover {
+.view-toggle-icon-btn .material-icons {
+  font-size: 20px;
+}
+
+.view-toggle-icon-btn.active {
+  background-color: #1B75BB;
+  color: #ffffff;
+}
+
+.view-toggle-icon-btn:not(.active):hover {
   background-color: var(--color-bg-neutral-lighter);
 }
 
+/* Icon Buttons */
 .icon-btn {
   background: none;
   border: none;
@@ -90,7 +128,7 @@
 
 .icon-btn:hover {
   background-color: var(--color-bg-neutral-lighter);
-  color: var(--color-blue-600, #0095FF);
+  color: #1B75BB;
 }
 
 .icon-btn .material-icons {
@@ -112,7 +150,7 @@
 
 .icon-btn-small:hover {
   background-color: var(--color-bg-neutral-lighter);
-  color: var(--color-blue-600, #0095FF);
+  color: #1B75BB;
 }
 
 .icon-btn-small .material-icons {
@@ -136,8 +174,8 @@
 }
 
 .column-selector-btn:hover {
-  border-color: var(--color-blue-600, #0095FF);
-  color: var(--color-blue-600, #0095FF);
+  border-color: #1B75BB;
+  color: #1B75BB;
 }
 
 .column-selector-popover {
@@ -186,7 +224,7 @@
 }
 
 .submissions-grid-table thead {
-  background-color: var(--color-blue-600, #0095FF);
+  background-color: #1B75BB;
   color: var(--color-white, white);
 }
 
@@ -200,7 +238,7 @@
 }
 
 .submissions-grid-table th:hover {
-  background-color: var(--color-blue-700, #0075CC);
+  background-color: #155E96;
 }
 
 .submissions-grid-table td {
@@ -219,7 +257,7 @@
 }
 
 .table-link {
-  color: var(--color-blue-600, #0095FF);
+  color: #1B75BB;
   text-decoration: none;
   font-weight: var(--font-weight-medium);
 }

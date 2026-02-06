@@ -86,122 +86,153 @@ const Dashboard = ({ onSubmissionSelect }) => {
   return (
     <div style={{ padding: '24px', width: '100%', backgroundColor: '#f5f5f5' }}>
       <DxcFlex direction="column" gap="var(--spacing-gap-l)">
-        <DxcHeading level={1} text="Dashboard" />
+        <DxcTypography
+          fontSize="var(--font-scale-05, 1.5rem)"
+          fontWeight="font-weight-semibold"
+          color="#333333"
+          letterSpacing="var(--font-tracking-wide-01, normal)"
+        >
+          Dashboard
+        </DxcTypography>
 
-        {/* Metrics Cards - Single Row */}
+        {/* Key Metrics Cards */}
         <DxcFlex gap="var(--spacing-gap-m)" wrap="wrap">
           {/* Total Submissions */}
-          <div className="metric-card" style={{ flex: '1 1 calc(14.28% - var(--spacing-gap-m))' }}>
-            <DxcFlex direction="column" gap="var(--spacing-gap-s)">
-              <DxcTypography fontSize="32px" fontWeight="font-weight-semibold" color="#0095FF">
+          <div className="metric-card">
+            <div className="metric-icon-container" style={{ backgroundColor: '#E8F4FD' }}>
+              <span className="material-icons" style={{ color: '#1B75BB', fontSize: '24px' }}>inbox</span>
+            </div>
+            <div className="metric-content">
+              <DxcTypography fontSize="28px" fontWeight="font-weight-semibold" color="#1B75BB">
                 {metrics.totalSubmissions}
               </DxcTypography>
-              <DxcTypography fontSize="14px" color="var(--color-fg-neutral-stronger)">
+              <DxcTypography fontSize="12px" color="#808285" fontWeight="font-weight-medium">
                 Total Submissions
               </DxcTypography>
-            </DxcFlex>
+            </div>
           </div>
 
           {/* New Submissions */}
-          <div className="metric-card" style={{ flex: '1 1 calc(14.28% - var(--spacing-gap-m))' }}>
-            <DxcFlex direction="column" gap="var(--spacing-gap-s)">
-              <DxcTypography fontSize="32px" fontWeight="font-weight-semibold" color="#D0021B">
+          <div className="metric-card">
+            <div className="metric-icon-container" style={{ backgroundColor: '#FFF3E0' }}>
+              <span className="material-icons" style={{ color: '#F6921E', fontSize: '24px' }}>fiber_new</span>
+            </div>
+            <div className="metric-content">
+              <DxcTypography fontSize="28px" fontWeight="font-weight-semibold" color="#F6921E">
                 {metrics.newSubmissions}
               </DxcTypography>
-              <DxcTypography fontSize="14px" color="var(--color-fg-neutral-stronger)">
+              <DxcTypography fontSize="12px" color="#808285" fontWeight="font-weight-medium">
                 New Submissions
               </DxcTypography>
-            </DxcFlex>
+            </div>
           </div>
 
           {/* Quotes Required */}
-          <div className="metric-card" style={{ flex: '1 1 calc(14.28% - var(--spacing-gap-m))' }}>
-            <DxcFlex direction="column" gap="var(--spacing-gap-s)">
-              <DxcTypography fontSize="32px" fontWeight="font-weight-semibold" color="#FF6B00">
+          <div className="metric-card">
+            <div className="metric-icon-container" style={{ backgroundColor: '#E8F5E9' }}>
+              <span className="material-icons" style={{ color: '#37A526', fontSize: '24px' }}>request_quote</span>
+            </div>
+            <div className="metric-content">
+              <DxcTypography fontSize="28px" fontWeight="font-weight-semibold" color="#37A526">
                 {metrics.quotesRequired}
               </DxcTypography>
-              <DxcTypography fontSize="14px" color="var(--color-fg-neutral-stronger)">
+              <DxcTypography fontSize="12px" color="#808285" fontWeight="font-weight-medium">
                 Quotes Required
               </DxcTypography>
-            </DxcFlex>
+            </div>
           </div>
 
           {/* Written Premium YTD */}
           <div className="metric-card-highlight">
-            <DxcFlex direction="column" gap="var(--spacing-gap-xs)">
-              <DxcTypography fontSize="12px" color="#FFFFFF">
-                WRITTEN PREMIUM YTD
-              </DxcTypography>
-              <DxcTypography fontSize="32px" fontWeight="font-weight-semibold" color="#FFFFFF">
+            <div className="metric-icon-container" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+              <span className="material-icons" style={{ color: '#FFFFFF', fontSize: '24px' }}>trending_up</span>
+            </div>
+            <div className="metric-content">
+              <DxcTypography fontSize="28px" fontWeight="font-weight-semibold" color="#FFFFFF">
                 ${metrics.writtenPremiumYTD}M
               </DxcTypography>
-              <DxcTypography fontSize="12px" color="#FFFFFF">
+              <DxcTypography fontSize="11px" color="rgba(255,255,255,0.9)" fontWeight="font-weight-medium">
+                Written Premium YTD
+              </DxcTypography>
+              <DxcTypography fontSize="11px" color="rgba(255,255,255,0.75)">
                 +18% vs last year
               </DxcTypography>
-            </DxcFlex>
+            </div>
           </div>
 
           {/* Pending Review */}
           <div className="metric-card-warning">
-            <DxcFlex direction="column" gap="var(--spacing-gap-xs)">
-              <DxcTypography fontSize="12px" color="#FFFFFF">
-                PENDING REVIEW
-              </DxcTypography>
-              <DxcTypography fontSize="32px" fontWeight="font-weight-semibold" color="#FFFFFF">
+            <div className="metric-icon-container" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+              <span className="material-icons" style={{ color: '#FFFFFF', fontSize: '24px' }}>pending_actions</span>
+            </div>
+            <div className="metric-content">
+              <DxcTypography fontSize="28px" fontWeight="font-weight-semibold" color="#FFFFFF">
                 {metrics.pendingReview}
               </DxcTypography>
-              <DxcTypography fontSize="12px" color="#FFFFFF">
+              <DxcTypography fontSize="11px" color="rgba(255,255,255,0.9)" fontWeight="font-weight-medium">
+                Pending Review
+              </DxcTypography>
+              <DxcTypography fontSize="11px" color="rgba(255,255,255,0.75)">
                 3 closing today
               </DxcTypography>
-            </DxcFlex>
+            </div>
           </div>
 
           {/* Approved This Month */}
           <div className="metric-card-success">
-            <DxcFlex direction="column" gap="var(--spacing-gap-xs)">
-              <DxcTypography fontSize="12px" color="#FFFFFF">
-                APPROVED THIS MONTH
-              </DxcTypography>
-              <DxcTypography fontSize="32px" fontWeight="font-weight-semibold" color="#FFFFFF">
+            <div className="metric-icon-container" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+              <span className="material-icons" style={{ color: '#FFFFFF', fontSize: '24px' }}>check_circle</span>
+            </div>
+            <div className="metric-content">
+              <DxcTypography fontSize="28px" fontWeight="font-weight-semibold" color="#FFFFFF">
                 {metrics.approvedThisMonth}
               </DxcTypography>
-              <DxcTypography fontSize="12px" color="#FFFFFF">
+              <DxcTypography fontSize="11px" color="rgba(255,255,255,0.9)" fontWeight="font-weight-medium">
+                Approved This Month
+              </DxcTypography>
+              <DxcTypography fontSize="11px" color="rgba(255,255,255,0.75)">
                 {metrics.approvalRate}% approval rate
               </DxcTypography>
-            </DxcFlex>
+            </div>
           </div>
 
           {/* Declined This Month */}
           <div className="metric-card-error">
-            <DxcFlex direction="column" gap="var(--spacing-gap-xs)">
-              <DxcTypography fontSize="12px" color="#FFFFFF">
-                DECLINED THIS MONTH
-              </DxcTypography>
-              <DxcTypography fontSize="32px" fontWeight="font-weight-semibold" color="#FFFFFF">
+            <div className="metric-icon-container" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+              <span className="material-icons" style={{ color: '#FFFFFF', fontSize: '24px' }}>cancel</span>
+            </div>
+            <div className="metric-content">
+              <DxcTypography fontSize="28px" fontWeight="font-weight-semibold" color="#FFFFFF">
                 {metrics.declinedThisMonth}
               </DxcTypography>
-              <DxcTypography fontSize="12px" color="#FFFFFF">
+              <DxcTypography fontSize="11px" color="rgba(255,255,255,0.9)" fontWeight="font-weight-medium">
+                Declined This Month
+              </DxcTypography>
+              <DxcTypography fontSize="11px" color="rgba(255,255,255,0.75)">
                 13% decline rate
               </DxcTypography>
-            </DxcFlex>
+            </div>
           </div>
         </DxcFlex>
 
-        {/* My Priorities Section */}
-        <div style={{
-          backgroundColor: "var(--color-bg-neutral-lightest)",
-          borderRadius: "var(--border-radius-m)",
-          boxShadow: "var(--shadow-mid-02)",
-          padding: "var(--spacing-padding-l)"
-        }}>
+        {/* Submissions Section - Card Container */}
+        <div className="submissions-container">
           <DxcFlex direction="column" gap="var(--spacing-gap-l)">
-            <DxcHeading level={3} text="My Priorities" />
+            <DxcFlex justifyContent="space-between" alignItems="center">
+              <DxcTypography
+                fontSize="var(--font-scale-04, 1.25rem)"
+                fontWeight="font-weight-semibold"
+                color="#333333"
+              >
+                My Priorities
+              </DxcTypography>
+            </DxcFlex>
 
             {/* Tabs */}
             <DxcTabs iconPosition="left">
               <DxcTabs.Tab
                 label="Submissions/New Business"
-                icon="folder_open"
+                icon="assignment"
                 active={activeTabIndex === 0}
                 onClick={() => setActiveTabIndex(0)}
               >
@@ -216,8 +247,8 @@ const Dashboard = ({ onSubmissionSelect }) => {
                 <div />
               </DxcTabs.Tab>
               <DxcTabs.Tab
-                label="Renewals and Servicing"
-                icon="autorenew"
+                label="Renewals"
+                icon="event_repeat"
                 active={activeTabIndex === 2}
                 onClick={() => setActiveTabIndex(2)}
               >
@@ -272,18 +303,23 @@ const Dashboard = ({ onSubmissionSelect }) => {
                 </div>
               )}
 
-              <button
-                onClick={() => setIsGridView(false)}
-                className={`view-toggle-btn ${!isGridView ? 'active' : ''}`}
-              >
-                Card View
-              </button>
-              <button
-                onClick={() => setIsGridView(true)}
-                className={`view-toggle-btn ${isGridView ? 'active' : ''}`}
-              >
-                Grid View
-              </button>
+              {/* View Toggle Icons */}
+              <div className="view-toggle-group">
+                <button
+                  onClick={() => setIsGridView(false)}
+                  className={`view-toggle-icon-btn ${!isGridView ? 'active' : ''}`}
+                  title="Card View"
+                >
+                  <span className="material-icons">view_agenda</span>
+                </button>
+                <button
+                  onClick={() => setIsGridView(true)}
+                  className={`view-toggle-icon-btn ${isGridView ? 'active' : ''}`}
+                  title="Grid View"
+                >
+                  <span className="material-icons">view_list</span>
+                </button>
+              </div>
             </DxcFlex>
 
             {/* Submission Cards or Grid Table */}
